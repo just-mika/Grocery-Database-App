@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         String url = "jdbc:mysql://@localhost:3306/grocery_database";
         String user = "root";
-        String password = "123456";
+        String password = "123456"; //just edit this to put whatever password you set for your local MySQL server 
 
         try {
             System.out.println("Connecting to database...");
