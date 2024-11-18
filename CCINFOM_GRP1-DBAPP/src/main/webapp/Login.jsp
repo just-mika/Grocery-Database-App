@@ -11,7 +11,7 @@
 <h2>Enter Password</h2>
 <div align=center><form action=LoginServlet method=post>
 <table>
-<tr><td><input type=text name=Password> <input type=submit value=login> <input type=reset> </td></tr>
+<tr><td><input type=password name=Password> <input type=submit value=login> <input type=reset> </td></tr>
 
 </table>
 </form></div>
