@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `grocery_database`.`customer` (
   `customer_id` INT NOT NULL,
   `last_name` VARCHAR(45) NULL DEFAULT NULL,
   `first_name` VARCHAR(45) NULL DEFAULT NULL,
-  `contact_number` INT NULL DEFAULT NULL,
+  `contact_number` VARCHAR(11) NULL DEFAULT NULL,
   PRIMARY KEY (`customer_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -66,9 +66,7 @@ CREATE TABLE IF NOT EXISTS `grocery_database`.`sales_transactions` (
   INDEX `fk_sales_transactions_customer1_idx` (`customer_id` ASC) VISIBLE,
   CONSTRAINT `fk_sales_transactions_customer1`
     FOREIGN KEY (`customer_id`)
-    REFERENCES `grocery_database`.`customer` (`customer_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `grocery_database`.`customer` (`customer_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -82,7 +80,7 @@ DROP TABLE IF EXISTS `grocery_database`.`customer_items` ;
 CREATE TABLE IF NOT EXISTS `grocery_database`.`customer_items` (
   `item_id` INT NOT NULL,
   `quantity` INT NOT NULL DEFAULT '0',
-  `product_total` FLOAT NOT NULL DEFAULT 0.0,
+  `product_total` FLOAT NOT NULL DEFAULT '0',
   `price` FLOAT NOT NULL DEFAULT '0',
   `product_code` INT NOT NULL,
   `sales_transactions_transaction_id` INT NOT NULL,
@@ -91,14 +89,10 @@ CREATE TABLE IF NOT EXISTS `grocery_database`.`customer_items` (
   INDEX `fk_customer_items_sales_transactions1_idx` (`sales_transactions_transaction_id` ASC) VISIBLE,
   CONSTRAINT `fk_customer_items_product_info1`
     FOREIGN KEY (`product_code`)
-    REFERENCES `grocery_database`.`product_info` (`product_code`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    REFERENCES `grocery_database`.`product_info` (`product_code`),
   CONSTRAINT `fk_customer_items_sales_transactions1`
     FOREIGN KEY (`sales_transactions_transaction_id`)
-    REFERENCES `grocery_database`.`sales_transactions` (`transaction_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `grocery_database`.`sales_transactions` (`transaction_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -111,15 +105,13 @@ DROP TABLE IF EXISTS `grocery_database`.`payment` ;
 
 CREATE TABLE IF NOT EXISTS `grocery_database`.`payment` (
   `payment_id` INT NOT NULL,
-  `payment_type` VARCHAR(45) NULL,
+  `payment_type` VARCHAR(45) NULL DEFAULT NULL,
   `transaction_id` INT NOT NULL,
   PRIMARY KEY (`payment_id`),
   INDEX `fk_payment_sales_transactions_idx` (`transaction_id` ASC) VISIBLE,
   CONSTRAINT `fk_payment_sales_transactions`
     FOREIGN KEY (`transaction_id`)
-    REFERENCES `grocery_database`.`sales_transactions` (`transaction_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `grocery_database`.`sales_transactions` (`transaction_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -156,14 +148,10 @@ CREATE TABLE IF NOT EXISTS `grocery_database`.`product_order_batch` (
   INDEX `fk_product_order_batch_supplier1_idx` (`supplier_code` ASC) VISIBLE,
   CONSTRAINT `fk_product_order_batch_product_info1`
     FOREIGN KEY (`product_code`)
-    REFERENCES `grocery_database`.`product_info` (`product_code`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    REFERENCES `grocery_database`.`product_info` (`product_code`),
   CONSTRAINT `fk_product_order_batch_supplier1`
     FOREIGN KEY (`supplier_code`)
-    REFERENCES `grocery_database`.`supplier` (`supplier_code`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `grocery_database`.`supplier` (`supplier_code`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
