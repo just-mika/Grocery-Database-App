@@ -97,11 +97,20 @@ public class Customer {
 	        String password = "123456"; //just edit this to put whatever password you set for your local MySQL server 
 	        
 	        Connection connection = DriverManager.getConnection(url, user, password);
-			PreparedStatement statement = connection.prepareStatement("SELECT MAX(customer_id) + 1 FROM customer");
-			ResultSet result = statement.executeQuery();
-			while(result.next()) {
-				customer_id = result.getInt(1);
-			}
+	        PreparedStatement statement = connection.prepareStatement("SELECT customer_id FROM customer ORDER BY customer_id");
+	        ResultSet result = statement.executeQuery();
+
+	        int expectedId = 0;
+	        while (result.next()) {
+	            int currentId = result.getInt("customer_id");
+	            if (currentId != expectedId) {
+	                break;
+	            }
+	            expectedId++;
+	        }
+
+	        customer_id = expectedId;
+	        
 			statement = connection.prepareStatement("INSERT INTO customer (customer_id, last_name, first_name, contact_number) VALUE (?, ?, ?, ?)");
 			statement.setInt(1, customer_id);
 			statement.setString(2, last_name);
@@ -131,14 +140,46 @@ public class Customer {
 			
 			if (statement.executeUpdate() > 0) {
 				System.out.println("Customer deleted successfully");
+				statement.close();
+				connection.close();
+				return 1;
 			} else {
 				System.out.println("Customer delete failed.");
+				statement.close();
+				connection.close();
+				return 0;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+	
+	public int update_customer(int customer_id, String first_name, String last_name, String contact_number) {
+		try {
+			String url = "jdbc:mysql://@localhost:3306/grocery_database";
+	        String user = "root";
+	        String password = "123456"; //just edit this to put whatever password you set for your local MySQL server 
+	        
+	        Connection connection = DriverManager.getConnection(url, user, password);
+			PreparedStatement statement = connection.prepareStatement("UPDATE customer SET first_name = ?, last_name = ?, contact_number = ? WHERE customer_id = ?");
+			statement.setString(1, first_name);
+			statement.setString(2, last_name);
+			statement.setString(3, contact_number);
+			statement.setInt(4, customer_id);
+			
+			if (statement.executeUpdate() > 0) {
+				System.out.println("Customer updated successfully");
+				statement.close();
+				connection.close();
+				return 1;
+			} else {
+				System.out.println("Customer Update failed.");
+				statement.close();
+				connection.close();
+				return 0;
 			}
 			
-			statement.close();
-			connection.close();
-			System.out.println("Customer added successfully");
-			return 1;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return 0;
