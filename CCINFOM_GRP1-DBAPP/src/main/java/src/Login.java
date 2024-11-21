@@ -14,7 +14,7 @@ public class Login{
 	public int getVal() {
 		String url = "jdbc:mysql://@localhost:3306/grocery_database";
         String user = "root";
-        String password = "12205419"; //just edit this to put whatever password you set for your local MySQL server 
+        String password = "123456"; //just edit this to put whatever password you set for your local MySQL server 
 
 		try { //Needed because exceptions will be encountered which is pain
 			
