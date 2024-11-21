@@ -9,7 +9,7 @@
 <body>
 <div align=center>
 <h2>Enter Password</h2>
-<div align=center><form action=LoginServlet method=post>
+<div align=center><form action=LoginProcess.jsp method=post>
 <table>
 <tr><td><input type=password name=Password> <input type=submit value=login> <input type=reset> </td></tr>
 
@@ -17,6 +17,5 @@
 </form></div>
 
 </div>
-<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/Home.jsp">BACK</a>
 </body>
 </html>
