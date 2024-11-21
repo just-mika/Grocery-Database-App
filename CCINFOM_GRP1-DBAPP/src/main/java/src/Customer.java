@@ -8,7 +8,7 @@ public class Customer {
 	public String last_name;
 	public String first_name;
 	public String contact_number;
-	
+	private String sqlPassword = "12205419";
 	public ArrayList<Integer> id_list = new ArrayList<>();
 	public ArrayList<String> last_name_list = new ArrayList<>();
 	public ArrayList<String> first_name_list = new ArrayList<>();
@@ -21,7 +21,7 @@ public class Customer {
 		try {
 			String url = "jdbc:mysql://@localhost:3306/grocery_database";
 	        String user = "root";
-	        String password = "123456"; //just edit this to put whatever password you set for your local MySQL server 
+	        String password = sqlPassword; //just edit this to put whatever password you set for your local MySQL server 
 	        
 	        Connection connection = DriverManager.getConnection(url, user, password);
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM customer");
@@ -59,7 +59,7 @@ public class Customer {
 		try {
 			String url = "jdbc:mysql://@localhost:3306/grocery_database";
 	        String user = "root";
-	        String password = "123456"; //just edit this to put whatever password you set for your local MySQL server 
+	        String password = sqlPassword; //just edit this to put whatever password you set for your local MySQL server 
 	        
 	        Connection connection = DriverManager.getConnection(url, user, password);
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM customer WHERE customer_id = ?");
@@ -94,7 +94,7 @@ public class Customer {
 		try {
 			String url = "jdbc:mysql://@localhost:3306/grocery_database";
 	        String user = "root";
-	        String password = "123456"; //just edit this to put whatever password you set for your local MySQL server 
+	        String password = sqlPassword; //just edit this to put whatever password you set for your local MySQL server 
 	        
 	        Connection connection = DriverManager.getConnection(url, user, password);
 	        PreparedStatement statement = connection.prepareStatement("SELECT customer_id FROM customer ORDER BY customer_id");
@@ -132,7 +132,7 @@ public class Customer {
 		try {
 			String url = "jdbc:mysql://@localhost:3306/grocery_database";
 	        String user = "root";
-	        String password = "123456"; //just edit this to put whatever password you set for your local MySQL server 
+	        String password = sqlPassword; //just edit this to put whatever password you set for your local MySQL server 
 	        
 	        Connection connection = DriverManager.getConnection(url, user, password);
 			PreparedStatement statement = connection.prepareStatement("DELETE FROM customer WHERE customer_id = ?");
@@ -159,7 +159,7 @@ public class Customer {
 		try {
 			String url = "jdbc:mysql://@localhost:3306/grocery_database";
 	        String user = "root";
-	        String password = "123456"; //just edit this to put whatever password you set for your local MySQL server 
+	        String password = sqlPassword; //just edit this to put whatever password you set for your local MySQL server 
 	        
 	        Connection connection = DriverManager.getConnection(url, user, password);
 			PreparedStatement statement = connection.prepareStatement("UPDATE customer SET first_name = ?, last_name = ?, contact_number = ? WHERE customer_id = ?");
