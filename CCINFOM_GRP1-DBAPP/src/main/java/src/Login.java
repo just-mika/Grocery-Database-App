@@ -16,6 +16,8 @@ public class Login{
         String user = "root";
         String password = "123456"; //just edit this to put whatever password you set for your local MySQL server 
 
+        										  //NOTE: Password for login is stored in MySQL database in securitycheck table.
+        
 		try { //Needed because exceptions will be encountered which is pain
 			
 			System.out.println(getter);
