@@ -9,6 +9,7 @@
 <body>
 	<h3>Supplier</h3>
 	<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/AddSupplier.jsp">Add Supplier</a><br>
+	<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/UpdateSupplier.jsp">Manage Supplier Information</a><br>
 	<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/Home.jsp">BACK</a><br>
 </body>
 </html>
