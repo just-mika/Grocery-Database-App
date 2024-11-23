@@ -2,8 +2,6 @@ package src;
 
 import java.sql.*;
 import java.util.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class ProductOrderBatch {
     public int batchId;
