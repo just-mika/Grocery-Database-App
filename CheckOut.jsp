@@ -14,12 +14,12 @@ S.getVals();
 int i = Integer.parseInt(request.getParameter("customer_id"));
 int result = S.CheckOut(i); 
 
-
 if(result == 1){
 
-%>Successfully Checked Out!<%} else { %>
+%>Successfully Checked Out! <%} else { %>
 Failed to Check Out!<%} %>
 
+<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductSelling.jsp">BACK</a>
 
 
 </body>

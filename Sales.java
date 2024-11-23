@@ -192,36 +192,33 @@ public class Sales {
         statement.setInt(2, 0);
 		statement.setFloat(3, 0);
 		statement.setTimestamp(4, Timestamp.valueOf(currentDate));
-		statement.setInt(1, customer_id);
+		statement.setInt(5, customer_id);
 		statement.executeUpdate();
 		
+		System.out.println("done");
 		
-		statement = connection.prepareStatement("UPDATE customer_items SET sales_transactions_transaction_id = ? WHERE sales_transactions_transaction_id = 0");
-		statement.setInt(1, transactionID);
-		statement.executeUpdate();
         
 		System.out.println(transactionID);
 		
 		getVals();
 		
 		totalItems = 0;
-		for(int i = 0; i < transaction_id.size(); i++) {
-			for(int j = 0; j < sales_id.size(); j++) {
-				if(sales_id.get(j) == transaction_id.get(i)) {
-					totalItems += quantity.get(j);
-				}
-			}
-		}
-		
-		
 		totalCost = 0;
-		for(int i = 0; i < transaction_id.size(); i++) {
-			for(int j = 0; j < sales_id.size(); j++) {
-				if(sales_id.get(j) == transaction_id.get(i)) {
-					totalCost += product_total.get(j);
-				}
+		for(int i = 0; i < sales_id.size(); i++) {
+			
+			if(sales_id.get(i) == 0) {
+			totalItems += quantity.get(i);
+			totalCost += product_total.get(i);
+			
 			}
 		}
+		
+		statement = connection.prepareStatement("UPDATE customer_items SET sales_transactions_transaction_id = ? WHERE sales_transactions_transaction_id = 0");
+		statement.setInt(1, transactionID);
+		statement.executeUpdate();
+		
+		
+		
     
         
         
