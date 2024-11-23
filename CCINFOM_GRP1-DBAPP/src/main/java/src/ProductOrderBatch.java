@@ -161,5 +161,84 @@ public class ProductOrderBatch {
         }
     }
     
+    public List<Map<String, Object>> getFilteredOrderBatches(String productCode, String supplierCode, String dateOrdered) {
+        List<Map<String, Object>> records = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/grocery_database", "root", sqlPassword)) {
+            String query = "SELECT * FROM product_order_batch WHERE 1=1";
+            if (productCode != null && !productCode.isEmpty()) {
+                query += " AND product_code = ?";
+            }
+            if (supplierCode != null && !supplierCode.isEmpty()) {
+                query += " AND supplier_code = ?";
+            }
+            if (dateOrdered != null && !dateOrdered.isEmpty()) {
+                query += " AND DATE(date_ordered) = ?";
+            }
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            int paramIndex = 1;
+            if (productCode != null && !productCode.isEmpty()) {
+                statement.setInt(paramIndex++, Integer.parseInt(productCode));
+            }
+            if (supplierCode != null && !supplierCode.isEmpty()) {
+                statement.setInt(paramIndex++, Integer.parseInt(supplierCode));
+            }
+            if (dateOrdered != null && !dateOrdered.isEmpty()) {
+                statement.setString(paramIndex++, dateOrdered);
+            }
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Map<String, Object> record = new HashMap<>();
+                record.put("batch_id", resultSet.getInt("batch_id"));
+                record.put("product_code", resultSet.getInt("product_code"));
+                record.put("quantity_ordered", resultSet.getInt("quantity_ordered"));
+                record.put("supplier_code", resultSet.getInt("supplier_code"));
+                record.put("date_ordered", resultSet.getTimestamp("date_ordered"));
+                record.put("cost", resultSet.getDouble("cost"));
+                records.add(record);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return records;
+    }
     
+    public Map<String, Object> getOrderBatchDetails(int batchId) {
+        Map<String, Object> batchDetails = new HashMap<>();
+
+        try {
+            String url = "jdbc:mysql://@localhost:3306/grocery_database"; // Your DB URL
+            String user = "root"; // Your DB username
+            String password = sqlPassword; // Your DB password
+
+            // Establish connection
+            Connection connection = DriverManager.getConnection(url, user, password);
+
+            // SQL query to fetch details of a specific product order batch by batch_id
+            String query = "SELECT * FROM product_order_batch WHERE batch_id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, batchId); // Set the batch_id parameter in the query
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                // Fetch data from the result set and add to the map
+                batchDetails.put("batch_id", result.getInt("batch_id"));
+                batchDetails.put("product_code", result.getInt("product_code"));
+                batchDetails.put("quantity_ordered", result.getInt("quantity_ordered"));
+                batchDetails.put("supplier_code", result.getInt("supplier_code"));
+                batchDetails.put("date_ordered", result.getTimestamp("date_ordered"));
+                batchDetails.put("cost", result.getDouble("cost"));
+            }
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log any errors
+        }
+
+        return batchDetails; // Return the details as a map
+    }
+
 }
