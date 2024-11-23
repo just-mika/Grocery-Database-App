@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Delete Product</title>
+<title>Update Product Record</title>
 </head>
 <body>
-	<jsp:useBean id="P" class="src.Product" scope="session" />
+		<jsp:useBean id="P" class="src.Product" scope="session" />
 <%
     int status = P.product_list();  // Fetch all product order batches
     if (status == 1) {
@@ -32,7 +32,7 @@
             <td><%= P.product_category_list.get(i) %></td>
             <td><%= P.quantity_list.get(i) %></td>
             <td>
-                <a href="DeletingProductProcess.jsp?product_code=<%= P.code_list.get(i) %>">Delete</a>
+                <a href="EditProductValues.jsp?product_code=<%= P.code_list.get(i) %>">Update</a>
             </td>
         </tr>
         <% } %>

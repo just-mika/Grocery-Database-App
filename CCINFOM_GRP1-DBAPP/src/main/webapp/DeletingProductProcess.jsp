@@ -10,12 +10,10 @@
 	<jsp:useBean id="P" class="src.Product" scope="session" />
 <%
 	String productcodeStr = request.getParameter("product_code");
-	System.out.println(productcodeStr);
 	if (productcodeStr != null && !productcodeStr.isEmpty()) {
 	    try {
 	        // Parse the productcode as an integer
 	        int product_code = Integer.parseInt(productcodeStr);
-	        System.out.println(product_code);
 	        // Call the delete_product method from the Product class
 	        boolean isDeleted = P.delete_product(product_code);
 	
