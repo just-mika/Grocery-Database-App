@@ -45,6 +45,6 @@
 <%
     }
 %>
-	<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/CustomerMgmt.jsp">BACK</a>
+	<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductMgmt.jsp">BACK</a>
 </body>
 </html>
