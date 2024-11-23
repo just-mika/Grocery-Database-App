@@ -11,5 +11,6 @@
 <a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductMgmt.jsp">Manage Products</a><br>
 <a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/CustomerMgmt.jsp">Manage Customers</a><br>
 <a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductOrderBatchMgmt.jsp">Product Orders</a><br>
+<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/SupplierMgmt.jsp">Manage Suppliers</a><br>
 </body>
 </html>
