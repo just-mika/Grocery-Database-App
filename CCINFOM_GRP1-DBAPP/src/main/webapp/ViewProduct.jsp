@@ -78,5 +78,6 @@
 <%
     }
 %>
+<a href = "http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductMgmt.jsp">View & Filter Product</a><br>
 </body>
 </html>
