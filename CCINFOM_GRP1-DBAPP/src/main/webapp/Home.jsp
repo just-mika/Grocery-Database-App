@@ -8,7 +8,6 @@
 </head>
 <body>
 <h1>WELCOME</h1>
-<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ViewCustomers.jsp">View Customers</a><br>
 <a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductMgmt.jsp">Manage Products</a><br>
 <a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/CustomerMgmt.jsp">Manage Customers</a><br>
 <a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductOrderBatchMgmt.jsp">Product Orders</a><br>
