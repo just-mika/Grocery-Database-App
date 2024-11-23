@@ -20,6 +20,14 @@ public class Product {
 	public Product() {
 	}
 	
+	public Product(int productCode, String productName, BigDecimal price, String productCategory, int quantityInStock) {
+        this.product_code = productCode;
+        this.product_name = productName;
+        this.price = price;
+        this.product_category = productCategory;
+        this.quantity_in_stock = quantityInStock;
+    }
+	
 	public int product_list() {
 		try {
 			String url = "jdbc:mysql://@localhost:3306/grocery_database";
@@ -198,4 +206,23 @@ public class Product {
 			return 0;
 		}
 	}
+	
+	public List<Integer> filterProductByCategory(String category) {
+        List<Integer> filteredCodes = new ArrayList<>();
+        for (int i = 0; i < product_category_list.size(); i++) {
+            if (product_category_list.get(i).equalsIgnoreCase(category)) {
+                filteredCodes.add(code_list.get(i));
+            }
+        }
+        return filteredCodes;
+    }
+
+	public List<String> getFilteredCategories(List<Integer> filteredCodes) {
+        List<String> filteredCategories = new ArrayList<>();
+        for (Integer code : filteredCodes) {
+            int index = code_list.indexOf(code);
+            filteredCategories.add(product_category_list.get(index));
+        }
+        return filteredCategories;
+    }
 }
