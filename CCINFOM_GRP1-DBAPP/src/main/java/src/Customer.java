@@ -8,7 +8,7 @@ public class Customer {
 	public String last_name;
 	public String first_name;
 	public String contact_number;
-	private String sqlPassword = "Pyxlaria&Crysalis285";
+	private String sqlPassword = "123456";
 	public ArrayList<Integer> id_list = new ArrayList<>();
 	public ArrayList<String> last_name_list = new ArrayList<>();
 	public ArrayList<String> first_name_list = new ArrayList<>();
