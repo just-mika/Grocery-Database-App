@@ -12,7 +12,8 @@
 <% 
 S.getVals();
 int i = Integer.parseInt(request.getParameter("customer_id"));
-int result = S.CheckOut(i); 
+String payementMethod = request.getParameter("payments");
+int result = S.CheckOut(i, payementMethod); 
 
 if(result == 1){
 

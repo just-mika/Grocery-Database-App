@@ -23,6 +23,9 @@
 		int quantity = Integer.parseInt(request.getParameter("quantity"));
 		float product_totalprice = P.price.get(j)*Float.parseFloat(request.getParameter("quantity"));
 		int customer_id = Integer.parseInt(request.getParameter("customerID"));
+		String payment = request.getParameter("payment");
+		
+		System.out.println("Payment: " + payment);
 		
 		int status=S.getter(1, product_code, quantity, product_totalprice, P.price.get(j), customer_id);
 		if (status==1) {
@@ -35,6 +38,7 @@
 	Add Another Order: <a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductSelling.jsp">BACK</a>
 	<form action="CheckOut.jsp" method="post">
 	<input type="hidden" name="customer_id" value="<%=customer_id%>"/>
+	<input type="hidden" name="payments" value="<%=payment%>"/>
 	<input type="submit" value="Check Out">
 	</form>
 

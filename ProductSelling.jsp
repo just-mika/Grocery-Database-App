@@ -11,6 +11,7 @@
 
 <jsp:useBean id = "P" class="src.Products" scope="session"/>
 <jsp:useBean id = "C" class="src.Customer" scope="session"/>
+<jsp:useBean id = "S" class="src.Sales" scope="session"/>
 	<% 
 		P.getter();
 	
@@ -50,6 +51,18 @@
 			</select><br>
 			
 			Quantity: <input type=text name="quantity"><br><br>
+			Payment Method: <select id = "paymentMethod" name = "payment">
+			
+			<%int i = 0; 
+				while(i < 3) {
+			%>
+					<option value ="<%= S.paymentMethods[i]%>">
+						<%=S.paymentMethods[i]%>
+					</option>
+					
+					<%i++;} %>
+			
+			</select>
 			
 			<%} else {%>No Customers Added! <a href="AddCustomer.jsp">Add NEW Customer</a><%} %>	
 				<input type="submit">

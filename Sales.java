@@ -44,6 +44,8 @@ public class Sales {
 	private ArrayList<Integer> customer_id_list = new ArrayList<>();
 	/*****************************************************************/
 	
+	public String[] paymentMethods = {"COD", "EPayment", "Card Debit/Credit"};
+	
 	
 	public void getVals() {
 		
@@ -159,7 +161,7 @@ public class Sales {
 		}
 	}
 	
-	public int CheckOut(int customer_id) {
+	public int CheckOut(int customer_id, String paymentMethod) {
 		
 		try {
 		String url = "jdbc:mysql://@localhost:3306/grocery_database";
@@ -228,6 +230,26 @@ public class Sales {
         statement.setInt(3, transactionID);
 		statement.executeUpdate();
         
+		statement = connection.prepareStatement("SELECT * FROM payment");
+		result = statement.executeQuery();
+		
+		 	expectedId = 0;
+	        while (result.next()) {
+	            int currentId = result.getInt("payment_id");
+	            if (currentId != expectedId) {
+	                break;
+	                
+	            }
+	            expectedId++; }
+	        
+	        int payment_id = expectedId;
+	        
+	        statement = connection.prepareStatement("INSERT INTO payment VALUE(?, ?, ?)");
+	        statement.setInt(1, payment_id);
+	        statement.setString(2, paymentMethod);
+	        statement.setInt(3, transactionID);
+	        statement.executeUpdate();
+	        
 		
 		statement.close();
 		connection.close();
@@ -235,18 +257,12 @@ public class Sales {
 		return 1;
 		
         }catch (Exception e) {
+        	
+        	System.out.println(e);
         	return 0;
         }
 		
 	}
-	
-	public int setter(int i) {
-		
-		getVals();
-		
-			
-			return CheckOut(i);
-		}
 	
 	
 	public int getter(int casing, int product_code, int quantity, float product_totalprice, float product_price, int customer_id) {
