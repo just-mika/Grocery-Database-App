@@ -10,7 +10,7 @@ public class ProductOrderBatch {
     public double cost;
     public int productCode;
     public int supplierCode;
-    private String sqlPassword = "123456";
+    private String sqlPassword = "Pyxlaria&Crysalis285";
     public List<Integer> batchIdList = new ArrayList<>();
     public List<Integer> quantityOrderedList = new ArrayList<>();
     public List<Timestamp> dateOrderedList = new ArrayList<>();
@@ -68,7 +68,7 @@ public class ProductOrderBatch {
     
     public int productOrderBatchList() {
         try {
-            String url = "jdbc:mysql://localhost:3306/grocery_database";  
+            String url = "jdbc:mysql://@localhost:3306/grocery_database";  
             String user = "root";  
             String password = sqlPassword;  
 
@@ -115,7 +115,7 @@ public class ProductOrderBatch {
     
     public boolean deleteProductOrderBatch(int batchId) {
         try {
-            String url = "jdbc:mysql://localhost:3306/grocery_database";  // Your DB URL
+            String url = "jdbc:mysql://@localhost:3306/grocery_database";  // Your DB URL
             String user = "root";  // Your DB username
             String password = sqlPassword;  // Your DB password
 
