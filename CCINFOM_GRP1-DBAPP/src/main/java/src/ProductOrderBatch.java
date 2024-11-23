@@ -70,7 +70,7 @@ public class ProductOrderBatch {
         try {
             String url = "jdbc:mysql://localhost:3306/grocery_database";  
             String user = "root";  
-            String password = "123456";  
+            String password = sqlPassword;  
 
             Connection connection = DriverManager.getConnection(url, user, password);
             
@@ -117,7 +117,7 @@ public class ProductOrderBatch {
         try {
             String url = "jdbc:mysql://localhost:3306/grocery_database";  // Your DB URL
             String user = "root";  // Your DB username
-            String password = "123456";  // Your DB password
+            String password = sqlPassword;  // Your DB password
 
             Connection connection = DriverManager.getConnection(url, user, password);
             String query = "DELETE FROM product_order_batch WHERE batch_id = ?";
