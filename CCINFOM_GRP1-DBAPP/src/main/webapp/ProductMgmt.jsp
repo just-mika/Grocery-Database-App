@@ -11,6 +11,7 @@
 <a href = "http://localhost:8082/CCINFOM_GRP1-DBAPP/AddProduct.jsp">Add Product</a><br>
 <a href = "http://localhost:8082/CCINFOM_GRP1-DBAPP/DeleteProduct.jsp">Delete Product</a><br>
 <a href = "http://localhost:8082/CCINFOM_GRP1-DBAPP/UpdateProduct.jsp">Update Product</a><br>
+<a href = "http://localhost:8082/CCINFOM_GRP1-DBAPP/ViewProduct.jsp">View & Filter Product</a><br>
 <a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/Home.jsp">BACK</a>
 </body>
 </html>
