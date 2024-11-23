@@ -10,7 +10,7 @@ public class ProductOrderBatch {
     public double cost;
     public int productCode;
     public int supplierCode;
-    private String sqlPassword = "Pyxlaria&Crysalis285";
+    private String sqlPassword = "123456";
     public List<Integer> batchIdList = new ArrayList<>();
     public List<Integer> quantityOrderedList = new ArrayList<>();
     public List<Timestamp> dateOrderedList = new ArrayList<>();
@@ -22,16 +22,19 @@ public class ProductOrderBatch {
     }
 
     public int addProductOrderBatch() {
+        Connection connection = null;
+        PreparedStatement insertBatchStmt = null;
+        PreparedStatement updateStockStmt = null;
         try {
             String url = "jdbc:mysql://@localhost:3306/grocery_database";
             String user = "root";
-            String password = sqlPassword; // Edit this with your MySQL server password
-            
-            Connection connection = DriverManager.getConnection(url, user, password);
+            String password = sqlPassword; // Update with your MySQL password
+
+            connection = DriverManager.getConnection(url, user, password);
 
             // Get the next batch ID
-            PreparedStatement statement = connection.prepareStatement("SELECT batch_id FROM product_order_batch ORDER BY batch_id");
-            ResultSet result = statement.executeQuery();
+            PreparedStatement idCheckStmt = connection.prepareStatement("SELECT batch_id FROM product_order_batch ORDER BY batch_id");
+            ResultSet result = idCheckStmt.executeQuery();
 
             int expectedId = 0;
             while (result.next()) {
@@ -44,25 +47,49 @@ public class ProductOrderBatch {
             batchId = expectedId;
 
             // Insert the new product order batch
-            statement = connection.prepareStatement(
-                "INSERT INTO product_order_batch (batch_id, quantity_ordered, date_ordered, cost, product_code, supplier_code) VALUES (?, ?, ?, ?, ?, ?)"
-            );
-            statement.setInt(1, batchId);
-            statement.setInt(2, quantityOrdered);
-            statement.setTimestamp(3, Timestamp.valueOf(dateOrdered));
-            statement.setDouble(4, cost);
-            statement.setInt(5, productCode);
-            statement.setInt(6, supplierCode);
+            String insertBatchQuery = "INSERT INTO product_order_batch (batch_id, quantity_ordered, date_ordered, cost, product_code, supplier_code) VALUES (?, ?, ?, ?, ?, ?)";
+            insertBatchStmt = connection.prepareStatement(insertBatchQuery);
+            insertBatchStmt.setInt(1, batchId);
+            insertBatchStmt.setInt(2, quantityOrdered);
+            insertBatchStmt.setTimestamp(3, Timestamp.valueOf(dateOrdered));
+            insertBatchStmt.setDouble(4, cost);
+            insertBatchStmt.setInt(5, productCode);
+            insertBatchStmt.setInt(6, supplierCode);
 
-            statement.executeUpdate();
+            int rowsInserted = insertBatchStmt.executeUpdate();
 
-            statement.close();
+            if (rowsInserted > 0) {
+                // Update the quantity_in_stock in product_info
+                String updateStockQuery = "UPDATE product_info SET quantity_in_stock = quantity_in_stock + ? WHERE product_code = ?";
+                updateStockStmt = connection.prepareStatement(updateStockQuery);
+                updateStockStmt.setInt(1, quantityOrdered);
+                updateStockStmt.setInt(2, productCode);
+
+                int rowsUpdated = updateStockStmt.executeUpdate();
+                if (rowsUpdated > 0) {
+                    System.out.println("Stock updated successfully.");
+                } else {
+                    System.out.println("Failed to update stock.");
+                    return 0; // Update stock failed
+                }
+            }
+
+            insertBatchStmt.close();
+            idCheckStmt.close();
             connection.close();
             System.out.println("Product Order Batch added successfully");
-            return 1;
+            return 1; // Success
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return 0;
+            e.printStackTrace();
+            return 0; // Failure
+        } finally {
+            try {
+                if (insertBatchStmt != null) insertBatchStmt.close();
+                if (updateStockStmt != null) updateStockStmt.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
     
@@ -133,5 +160,6 @@ public class ProductOrderBatch {
             return false;  // Returns false if deletion failed
         }
     }
+    
     
 }

@@ -35,7 +35,7 @@
         int status = POB.addProductOrderBatch();
         if (status == 1) {
 %>
-            <h3>Product Order Batch added successfully!</h3>
+            <h3>Product Order Batch added successfully! Stock updated.</h3>
 <%
         } else {
 %>
