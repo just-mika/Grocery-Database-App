@@ -1,6 +1,5 @@
 CREATE DATABASE  IF NOT EXISTS `grocery_database` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `grocery_database`;
-
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: grocery_database
@@ -57,12 +56,12 @@ CREATE TABLE `customer_items` (
   `product_total` float NOT NULL DEFAULT '0',
   `price` float NOT NULL DEFAULT '0',
   `product_code` int NOT NULL,
-  `sales_transactions_transaction_id` int NOT NULL,
+  `transaction_id` int NOT NULL,
   PRIMARY KEY (`item_id`),
   KEY `fk_customer_items_product_info1_idx` (`product_code`),
-  KEY `fk_customer_items_sales_transactions1_idx` (`sales_transactions_transaction_id`),
+  KEY `fk_customer_items_sales_transactions1_idx` (`transaction_id`),
   CONSTRAINT `fk_customer_items_product_info1` FOREIGN KEY (`product_code`) REFERENCES `product_info` (`product_code`),
-  CONSTRAINT `fk_customer_items_sales_transactions1` FOREIGN KEY (`sales_transactions_transaction_id`) REFERENCES `sales_transactions` (`transaction_id`)
+  CONSTRAINT `fk_customer_items_sales_transactions1` FOREIGN KEY (`transaction_id`) REFERENCES `sales_transactions` (`transaction_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -245,4 +244,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-23  0:49:20
+-- Dump completed on 2024-11-23 12:00:12
