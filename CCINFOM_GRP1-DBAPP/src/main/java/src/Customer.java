@@ -55,6 +55,45 @@ public class Customer {
 		}
 	}
 	
+	public int filter_customers(String filter) {
+		try {
+			String url = "jdbc:mysql://@localhost:3306/grocery_database";
+	        String user = "root";
+	        String password = sqlPassword; //just edit this to put whatever password you set for your local MySQL server 
+	        
+	        Connection connection = DriverManager.getConnection(url, user, password);
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM customer WHERE last_name LIKE ?");
+			statement.setString(1, filter + "%");  
+			ResultSet result = statement.executeQuery();
+			
+			id_list.clear();
+			last_name_list.clear();
+			first_name_list.clear();
+			contact_list.clear();
+			
+			
+			while(result.next()) {
+				customer_id = result.getInt(1);
+				last_name = result.getString(2);
+				first_name = result.getString(3);
+				contact_number = result.getString(4);
+				
+				id_list.add(customer_id);
+				last_name_list.add(last_name);
+				first_name_list.add(first_name);
+				contact_list.add(contact_number);
+			}
+			
+			statement.close();
+			connection.close();
+			System.out.println("List made successfully");
+			return 1;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+	
 	public int sort_customers() {
 		try {
 			String url = "jdbc:mysql://@localhost:3306/grocery_database";
