@@ -16,10 +16,10 @@ public class Sales {
 	/*For Customer Items*/
 	
 	/*****************************************************************/
-	private int itemID;
-	private int quantityOrdered;
-	private float total, priceItem;
-	private int salesID, codeProduct;
+	public int itemID;
+	public int quantityOrdered;
+	public float total, priceItem;
+	public int salesID, codeProduct;
 	
 	private ArrayList<Integer> item_id = new ArrayList<>();
 	private ArrayList<Integer> quantity = new ArrayList<>();
@@ -32,10 +32,10 @@ public class Sales {
 	/*For sales_transactions*/
 	
 	/*****************************************************************/
-	private int transactionID, customerID;
-	private int totalItems;
-	private float totalCost;
-	private String dateOfSale;
+	public int transactionID, customerID;
+	public int totalItems;
+	public float totalCost;
+	public String dateOfSale;
 	
 	private ArrayList<Integer> transaction_id = new ArrayList<>();
 	private ArrayList<Integer> total_items = new ArrayList<>();
@@ -43,6 +43,9 @@ public class Sales {
 	private ArrayList<String> date_of_sale = new ArrayList<>();
 	private ArrayList<Integer> customer_id_list = new ArrayList<>();
 	/*****************************************************************/
+	
+	
+	public String[] paymentMethods = {"COD", "EPayment", "Card Debit/Credit"};
 	
 	
 	public void getVals() {
@@ -112,7 +115,7 @@ public class Sales {
 	}
 	
 	
-	private int addOrder(int product_code, int quantityInput, float product_totalprice, float product_price, int customer_id) {
+	private int addOrder(int product_code, int quantityInput, float product_totalprice, float product_price) {
 		
 		try {
 			String url = "jdbc:mysql://@localhost:3306/grocery_database";
@@ -139,7 +142,7 @@ public class Sales {
 	        
 	        
 	        
-			statement = connection.prepareStatement("INSERT INTO customer_items (item_id, quantity, product_total, price, product_code, sales_transactions_transaction_id) VALUE (?, ?, ?, ?, ?, ?)");
+			statement = connection.prepareStatement("INSERT INTO customer_items (item_id, quantity, product_total, price, product_code, transaction_id) VALUE (?, ?, ?, ?, ?, ?)");
 			statement.setInt(1, itemID);
 			statement.setInt(2, quantityInput);
 			statement.setFloat(3, product_totalprice);
@@ -159,7 +162,7 @@ public class Sales {
 		}
 	}
 	
-	public int CheckOut(int customer_id) {
+	public int CheckOut(int customer_id, String paymentMethod) {
 		
 		try {
 		String url = "jdbc:mysql://@localhost:3306/grocery_database";
@@ -167,7 +170,7 @@ public class Sales {
         String password = sqlPassword; //just edit this to put whatever password you set for your local MySQL server 
         
         Connection connection = DriverManager.getConnection(url, user, password);
-        PreparedStatement statement = connection.prepareStatement("SELECT transaction_id FROM sales_transactions");
+        PreparedStatement statement = connection.prepareStatement("SELECT transaction_id FROM sales_transactions ORDER BY transaction_id");
         ResultSet result = statement.executeQuery();
         result = statement.executeQuery();
         
@@ -176,9 +179,10 @@ public class Sales {
             int currentId = result.getInt("transaction_id");
             if (currentId != expectedId) {
                 break;
-                
             }
-            expectedId++; }
+            expectedId+=1; 
+            
+        }
             
 
         transactionID = expectedId;
@@ -192,38 +196,31 @@ public class Sales {
         statement.setInt(2, 0);
 		statement.setFloat(3, 0);
 		statement.setTimestamp(4, Timestamp.valueOf(currentDate));
-		statement.setInt(1, customer_id);
+		statement.setInt(5, customer_id);
 		statement.executeUpdate();
 		
+		System.out.println("done");
 		
-		statement = connection.prepareStatement("UPDATE customer_items SET sales_transactions_transaction_id = ? WHERE sales_transactions_transaction_id = 0");
-		statement.setInt(1, transactionID);
-		statement.executeUpdate();
         
 		System.out.println(transactionID);
 		
 		getVals();
 		
 		totalItems = 0;
-		for(int i = 0; i < transaction_id.size(); i++) {
-			for(int j = 0; j < sales_id.size(); j++) {
-				if(sales_id.get(j) == transaction_id.get(i)) {
-					totalItems += quantity.get(j);
-				}
-			}
-		}
-		
-		
 		totalCost = 0;
-		for(int i = 0; i < transaction_id.size(); i++) {
-			for(int j = 0; j < sales_id.size(); j++) {
-				if(sales_id.get(j) == transaction_id.get(i)) {
-					totalCost += product_total.get(j);
-				}
+		for(int i = 0; i < sales_id.size(); i++) {
+			
+			if(sales_id.get(i) == 0) {
+			totalItems += quantity.get(i);
+			totalCost += product_total.get(i);
+			
 			}
 		}
-    
-        
+		
+		statement = connection.prepareStatement("UPDATE customer_items SET transaction_id = ? WHERE transaction_id = 0");
+		statement.setInt(1, transactionID);
+		statement.executeUpdate();
+		
         
         statement = connection.prepareStatement("UPDATE sales_transactions SET total_items = ?, total_cost = ? WHERE transaction_id = ?");
         statement.setInt(1, totalItems);
@@ -231,6 +228,26 @@ public class Sales {
         statement.setInt(3, transactionID);
 		statement.executeUpdate();
         
+		statement = connection.prepareStatement("SELECT * FROM payment");
+		result = statement.executeQuery();
+		
+		 	expectedId = 0;
+	        while (result.next()) {
+	            int currentId = result.getInt("payment_id");
+	            if (currentId != expectedId) {
+	                break;
+	                
+	            }
+	            expectedId++; }
+	        
+	        int payment_id = expectedId;
+	        
+	        statement = connection.prepareStatement("INSERT INTO payment VALUE(?, ?, ?)");
+	        statement.setInt(1, payment_id);
+	        statement.setString(2, paymentMethod);
+	        statement.setInt(3, transactionID);
+	        statement.executeUpdate();
+	        
 		
 		statement.close();
 		connection.close();
@@ -238,29 +255,154 @@ public class Sales {
 		return 1;
 		
         }catch (Exception e) {
+        	
+        	System.out.println(e);
         	return 0;
         }
 		
 	}
 	
-	public int setter(int i) {
+	
+	private int deleteOrder(int customerid, int itemid) {
 		
-		getVals();
-		
+		try {
+			String url = "jdbc:mysql://@localhost:3306/grocery_database";
+	        String user = "root";
+	        String password = sqlPassword; //just edit this to put whatever password you set for your local MySQL server 
+	        
+	        System.out.println("Item ID: " + customerID);
+	        
+	        Connection connection = DriverManager.getConnection(url, user, password);
+			PreparedStatement statement = connection.prepareStatement("SELECT quantity, product_total FROM customer_items WHERE item_id = ?");
+			statement.setInt(1, itemID);
+			ResultSet result = statement.executeQuery();
 			
-			return CheckOut(i);
+			System.out.println("Item ID: " + itemID);
+			
+			int quantity = 0, transactionid = 0, totalitems = 0;
+			float totalproductcost = 0, totalcost = 0;
+			
+			if(result.next()) {
+				quantity = result.getInt(1);
+				totalproductcost = result.getInt(2);
+			}
+			
+			System.out.println("Product Quantity: " + quantity);
+			System.out.println("Product Cost: " + totalproductcost);
+			
+			statement = connection.prepareStatement("SELECT sales_transactions.transaction_id, sales_transactions.total_items, sales_transactions.total_cost FROM sales_transactions JOIN customer_items ON sales_transactions.transaction_id = customer_items.transaction_id WHERE sales_transactions.customer_id = ?");
+			statement.setInt(1, customerID);
+			result = statement.executeQuery();
+			
+			if(result.next()) {
+				transactionid = result.getInt(1);
+				totalitems = result.getInt(2);
+				totalcost = result.getFloat(3);
+			}
+			
+			System.out.println("Total Cost: " + totalcost);
+			System.out.println("Total Items: " + totalitems);
+			System.out.println("Item ID: " + itemID);
+			
+			totalcost = totalcost - totalproductcost;
+			totalitems = totalitems - quantity;
+			
+			System.out.println("Total Cost: " + totalcost);
+			System.out.println("Total Items: " + totalitems);
+			
+			
+			
+			statement = connection.prepareStatement("DELETE FROM customer_items WHERE item_id = ?");
+			statement.setInt(1, itemid);
+			int i = statement.executeUpdate();
+			
+			if(totalcost == 0 && totalitems == 0) {
+				
+				statement = connection.prepareStatement("DELETE FROM payment WHERE transaction_id = ?");
+				statement.setInt(1, transactionid);
+				statement.executeUpdate();
+				
+				statement = connection.prepareStatement("DELETE FROM sales_transactions WHERE transaction_id = ?");
+				statement.setInt(1, transactionid);
+				statement.executeUpdate();
+			}
+			else {
+				statement = connection.prepareStatement("UPDATE sales_transactions SET total_items = ?, total_cost = ?, date_of_sale = ? WHERE transaction_id = ?");
+				statement.setInt(1, totalitems);
+				statement.setFloat(2, totalcost);
+				LocalDateTime currentDate = LocalDateTime.now();
+				statement.setTimestamp(3, Timestamp.valueOf(currentDate));
+				statement.setInt(4, transactionid);
+				statement.executeUpdate();
+				
+			}	
+			
+			if (i > 0) {
+				System.out.println("Order deleted successfully");
+				
+				statement.close();
+				connection.close();
+				return 1;
+			} else {
+				System.out.println("Order delete failed.");
+				statement.close();
+				connection.close();
+				return 0;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
 		}
+		
+	}
 	
-	
-	public int getter(int casing, int product_code, int quantity, float product_totalprice, float product_price, int customer_id) {
+	public int getter(int casing, int product_code, int quantity, float product_totalprice, float product_price) {
 		
 		getVals();
+		
+		System.out.println(quantity);
 		
 		switch(casing){
-		case 1: return addOrder(product_code, quantity, product_totalprice, product_price, customer_id);
+		case 1: return addOrder(product_code, quantity, product_totalprice, product_price);
+		case 2: return deleteOrder(product_code, quantity);
 		}
 		return 0;
 	}
+	
+	public ArrayList<Integer> integerListGetter(int check) {
+		
+		getVals();
+		
+		ArrayList<Integer> listBuffer = new ArrayList<>();
+		
+		switch(check) {
+		case 1: listBuffer = item_id; break;
+		case 2: listBuffer = quantity; break;
+		case 3: listBuffer = productCode; break;
+		case 4: listBuffer = sales_id; break;
+		case 5: listBuffer = transaction_id; break;
+		case 6: listBuffer = total_items; break;
+		case 7: listBuffer = customer_id_list; break;
+		}
+		
+		return listBuffer;
+	}
+	
+	public ArrayList<Float> floatListGetter(int check) {
+		
+		getVals();
+		
+		ArrayList<Float> listBuffer = new ArrayList<>();
+		
+		switch(check) {
+		case 1: listBuffer = product_total; break;
+		case 2: listBuffer = price; break;
+		case 3: listBuffer = total_cost; break;
+		}
+		
+		return listBuffer;
+	}
+	
 	
 	
 }
