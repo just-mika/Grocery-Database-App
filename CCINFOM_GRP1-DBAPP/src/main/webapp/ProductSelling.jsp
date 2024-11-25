@@ -10,7 +10,6 @@
 <body>
 
 <jsp:useBean id = "P" class="src.Products" scope="session"/>
-<jsp:useBean id = "C" class="src.Customer" scope="session"/>
 	<% 
 		P.getter();
 	
@@ -30,28 +29,8 @@
 				
 			</select> <br>
 			
-			<% 
-		C.customer_list();
-	
-		if (C.id_list.size() > 0){ 
-	%>
-		
-			Select Customer: <select id = "customerID" name = "customerID">
-			<%
-				for(int i = 0; i < C.id_list.size(); i++){
-			%>		
-					<option value ="<%= C.id_list.get(i)%>">
-						<%=C.id_list.get(i) + " | " +  C.last_name_list.get(i) + ", " + C.first_name_list.get(i) %>
-					</option>
-			<%
-				}
-			%>			
-				
-			</select><br>
-			
 			Quantity: <input type=text name="quantity"><br><br>
 			
-			<%} else {%>No Customers Added! <a href="AddCustomer.jsp">Add NEW Customer</a><%} %>	
 				<input type="submit">
 			</form>
 	<%} else { %>
@@ -61,9 +40,22 @@
 	
 
 
-<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/UpdateCustomerOrder.jsp">Update Order</a><br>
-<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/DeletCustomerOrder.jsp">Delete Order</a><br>
-<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/UpdatePaymentMethod.jsp">Update Payment Method</a><br>
+
+<br><br><br>
+<form action="SelectCustomer.jsp" method="POST">
+<input type="hidden" name="check" value="1">
+<input type="submit" value="Update Order">
+</form>
+<br>
+<form action="SelectCustomer.jsp" method="POST">
+<input type="hidden" name="check" value="2">
+<input type="submit" value="Delete Order">
+</form>
+<br>
+<form action="SelectCustomer.jsp" method="POST">
+<input type="hidden" name="check" value="3">
+<input type="submit" value="Update Payment Method">
+</form>
 
 <a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/Home.jsp">BACK</a>
 </body>

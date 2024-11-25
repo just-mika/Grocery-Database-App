@@ -8,19 +8,45 @@
 </head>
 <body>
 <jsp:useBean id = "S" class="src.Sales" scope="session"/>
+<jsp:useBean id = "C" class="src.Customer" scope="session"/>
 
+
+<form action="CompleteOrdering.jsp" method="POST">
 <% 
-S.getVals();
-int i = Integer.parseInt(request.getParameter("customer_id"));
-int result = S.CheckOut(i); 
-
-
-if(result == 1){
-
-%>Successfully Checked Out!<%} else { %>
-Failed to Check Out!<%} %>
-
-
-
+		C.customer_list();
+		S.getVals();
+	
+		if (C.id_list.size() > 0){ 
+	%>
+		
+			Select Customer: <select id = "customerID" name = "customerID">
+			<%
+				for(int i = 0; i < C.id_list.size(); i++){
+			%>		
+					<option value ="<%= C.id_list.get(i)%>">
+						<%=C.id_list.get(i) + " | " +  C.last_name_list.get(i) + ", " + C.first_name_list.get(i) %>
+					</option>
+			<%
+				}
+			%>			
+				
+			</select><br>
+			
+			Payment Method: <select id = "paymentMethod" name = "payment">
+			
+			<%int i = 0; 
+				while(i < 3) {
+			%>
+					<option value ="<%= S.paymentMethods[i]%>">
+						<%=S.paymentMethods[i]%>
+					</option>
+					
+					<%i++;} %>
+			
+			</select>
+			
+			<%} else {%>No Customers Added! <a href="AddCustomer.jsp">Add NEW Customer</a><%} %>	
+<input type="submit">
+</form>
 </body>
 </html>

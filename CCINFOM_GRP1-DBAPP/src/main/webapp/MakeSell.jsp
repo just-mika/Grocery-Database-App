@@ -22,21 +22,21 @@
 		int product_code = Integer.parseInt(request.getParameter("product_ID"));
 		int quantity = Integer.parseInt(request.getParameter("quantity"));
 		float product_totalprice = P.price.get(j)*Float.parseFloat(request.getParameter("quantity"));
-		int customer_id = Integer.parseInt(request.getParameter("customerID"));
 		
-		int status=S.getter(1, product_code, quantity, product_totalprice, P.price.get(j), customer_id);
+		int status=S.getter(1, product_code, quantity, product_totalprice, P.price.get(j));
 		if (status==1) {
 	%>
 			<h3>Order added successfully</h3>
+			<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductSelling.jsp">Add Another Order</a>
+			<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/CheckOut.jsp">Check Out</a>
+			
+			
 	<%	} else {
 	%>
 			<h3>Adding Order failed</h3>
+			<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductSelling.jsp">BACK</a>
 	<%  }%>
-	Add Another Order: <a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductSelling.jsp">BACK</a>
-	<form action="CheckOut.jsp" method="post">
-	<input type="hidden" name="customer_id" value="<%=customer_id%>"/>
-	<input type="submit" value="Check Out">
-	</form>
+	
 
 </body>
 </html>

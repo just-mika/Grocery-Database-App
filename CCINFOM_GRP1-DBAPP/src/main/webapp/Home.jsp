@@ -8,9 +8,10 @@
 </head>
 <body>
 <h1>WELCOME</h1>
-<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductMgmt.jsp">Manage Products</a><br>
+<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductOrderBatchMgmt.jsp">Products</a><br>
 <a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/CustomerMgmt.jsp">Manage Customers</a><br>
-<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductOrderBatchMgmt.jsp">Product Orders</a><br>
-<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/SupplierMgmt.jsp">Manage Suppliers</a><br>
+<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/ProductSelling.jsp">Sell Products</a><br><br><br>
+
+<a href="http://localhost:8082/CCINFOM_GRP1-DBAPP/Login.jsp">Sign Out</a>
 </body>
 </html>
